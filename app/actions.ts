@@ -1,9 +1,8 @@
 "use server"
 
-// TODO S2: conectar a Supabase
-// import { createClient } from "@/lib/supabase/server"
+import { supabase } from "@/lib/supabase/client"
 
-type WaitlistState = { error?: string; success?: boolean }
+type WaitlistState = { error?: string; success?: boolean; message?: string }
 
 export async function joinWaitlist(
   _prevState: WaitlistState,
@@ -15,11 +14,43 @@ export async function joinWaitlist(
     return { error: "Email inválido" }
   }
 
-  // S2: Aquí conectaremos Supabase
-  // const supabase = await createClient()
-  // const { error } = await supabase.from("waitlist").insert({ email })
-  // if (error) return { error: "Ya estás en la lista o hubo un error." }
+  try {
+    // Verificar si el email ya existe
+    const { data: existingEmail, error: checkError } = await supabase
+      .from("waitlist")
+      .select("email")
+      .eq("email", email)
+      .single()
 
-  console.log("Waitlist signup:", email)
-  return { success: true }
+    if (checkError && checkError.code !== "PGRST116") {
+      // PGRST116 es el código cuando no se encuentra nada (lo cual está bien)
+      console.error("Error checking email:", checkError)
+      return { error: "Hubo un error al procesar tu solicitud. Inténtalo de nuevo." }
+    }
+
+    if (existingEmail) {
+      return {
+        success: true,
+        message: "¡Ya estás en la lista! Te avisaremos pronto."
+      }
+    }
+
+    // Insertar nuevo email
+    const { error: insertError } = await supabase
+      .from("waitlist")
+      .insert({ email })
+
+    if (insertError) {
+      console.error("Error inserting email:", insertError)
+      return { error: "Hubo un error al guardar tu email. Inténtalo de nuevo." }
+    }
+
+    return {
+      success: true,
+      message: "Perfecto estás apuntado al proyecto! cuando este en directo te avisamos!"
+    }
+  } catch (error) {
+    console.error("Unexpected error:", error)
+    return { error: "Hubo un error inesperado. Inténtalo de nuevo." }
+  }
 }

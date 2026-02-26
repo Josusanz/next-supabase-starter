@@ -5,7 +5,7 @@ import { joinWaitlist } from "@/app/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-const initialState: { error?: string; success?: boolean } = {}
+const initialState: { error?: string; success?: boolean; message?: string } = {}
 
 export function WaitlistForm() {
   const [state, formAction, pending] = useActionState(joinWaitlist, initialState)
@@ -18,7 +18,7 @@ export function WaitlistForm() {
             <path d="M1 4l2.5 2.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <p className="text-sm text-emerald-400">You&apos;re on the list! We&apos;ll notify you when we launch.</p>
+        <p className="text-sm text-emerald-400">{state.message || "Perfecto estás apuntado al proyecto! cuando este en directo te avisamos!"}</p>
       </div>
     )
   }
