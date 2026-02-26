@@ -37,10 +37,10 @@ export default function Home() {
           </Badge>
 
           <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Ship your SaaS.
+            Launch in days.
             <br />
             <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300 bg-clip-text text-transparent">
-              Not your boilerplate.
+              Not months.
             </span>
           </h1>
 
