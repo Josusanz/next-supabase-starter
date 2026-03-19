@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 type WaitlistEntry = {
   id: string
   email: string
-  created_at: string
+  created_at: string | null
 }
 
 export default function ExportButton({ emails }: { emails: WaitlistEntry[] }) {
@@ -15,7 +15,7 @@ export default function ExportButton({ emails }: { emails: WaitlistEntry[] }) {
     const rows = emails.map((entry, index) => [
       index + 1,
       entry.email,
-      new Date(entry.created_at).toLocaleString("es-ES"),
+      entry.created_at ? new Date(entry.created_at).toLocaleString("es-ES") : "N/A",
     ])
 
     const csvContent = [
