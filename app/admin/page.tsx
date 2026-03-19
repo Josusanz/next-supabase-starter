@@ -72,7 +72,8 @@ export default function AdminPage() {
     setIsLoading(false)
   }
 
-  function formatDate(dateString: string) {
+  function formatDate(dateString: string | null) {
+    if (!dateString) return "N/A"
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("es-ES", {
       day: "2-digit",
