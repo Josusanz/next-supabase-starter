@@ -14,10 +14,11 @@ import ExportButton from "@/app/dashboard/export-button"
 type WaitlistEntry = {
   id: string
   email: string
-  created_at: string
+  created_at: string | null
 }
 
-function formatDate(dateString: string) {
+function formatDate(dateString: string | null) {
+  if (!dateString) return "N/A"
   return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
     month: "short",
