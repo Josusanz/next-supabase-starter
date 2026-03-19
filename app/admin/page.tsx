@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 type WaitlistEntry = {
   id: string
   email: string
-  created_at: string
+  created_at: string | null
 }
 
 export default function AdminPage() {
